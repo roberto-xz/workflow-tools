@@ -17,9 +17,9 @@ yt-dlp -x --audio-format m4a --audio-quality 3 -o "%(timestamp)s.%(ext)s" "$pl_u
 
 echo "changing metadata, please wait ..."
 for file_ in *.m4a; do
-    exiftool -Title="$file_" -Album="$al_nam" -Artist="$ar_nam" -Genre="$ms_gen" "$file_" > /dev/null 2>&1
-    exiftool -CoverArt="cover.jpg" "$_file" > /dev/null 2>&1
-    rm *.m4a_original > /dev/null 2>&1
+    exiftool -overwrite_original -Title="$file_" -Album="$al_nam" -Artist="$ar_nam" -Genre="$ms_gen" "$file_" > /dev/null 2>&1
+    exiftool "-CoverArt<=cover.jpg" "$file_"
 done
 
+rm -rf cover.jpg
 echo -e "ok, everything is fine"
