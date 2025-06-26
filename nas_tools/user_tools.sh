@@ -81,6 +81,7 @@ function delete_user() {
 			echo "──────────────────────────────────────"
 			echo "user deleted successfully"
 			echo "──────────────────────────────────────"
+			read -p "Press [Enter] to return..." _
 			return 0
 		else
 			echo "the user has volumes, please delete the volumes first"

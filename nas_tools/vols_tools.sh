@@ -10,6 +10,8 @@ function create_volume() {
 
 	if [[ ! -d "/mnt/users/${user_owner}" ]]; then
 		echo "the user ${user_owner} does not exist"
+		echo "──────────────────────────────────────"
+		read -p "Press [Enter] to return..." _
 		return 1
 	fi
 
@@ -20,6 +22,8 @@ function create_volume() {
 
 	if [[ -d "$dist_disk" ]]; then
 		echo "volume ${volum_name} already exists for this user"
+		echo "──────────────────────────────────────"
+		read -p "Press [Enter] to return..." _
 		return 1
 	fi
 
