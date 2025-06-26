@@ -1,6 +1,5 @@
-
 #
-# roberto-xz 26,Jul 2025	
+# roberto-xz 26,Jul 2025
 #
 
 function create_volume() {
@@ -19,10 +18,10 @@ function create_volume() {
 	local madm_name="/dev/md/${disk_name}"
 	local loop_devs=()
 
-	if [[ -d "$dist_disk" ]]; then 
+	if [[ -d "$dist_disk" ]]; then
 		echo "volume ${volum_name} already exists for this user"
 		return 1
-	fi	
+	fi
 
 	mkdir -p "${dist_disk}"
 
@@ -34,23 +33,23 @@ function create_volume() {
 		loop_devs+=("$loop_path")
 	done
 
-	mdadm --quiet --create "$madm_name" --level="$raid_type" --raid-devices="$disks_leng" "${loop_devs[@]}" 
+	mdadm --quiet --create "$madm_name" --level="$raid_type" --raid-devices="$disks_leng" "${loop_devs[@]}"
 	sleep 3; mkfs.ext4 "$madm_name"
 	mount --mkdir "$madm_name" "/media/${user_owner}/${volum_name}"
 
 	chown "${user_owner}":"nas_users" "/media/${user_owner}/${volum_name}"
-	chmod 700 "/media/${user_owner}/${volum_name}"
+	chmod u=rwx,g=---,o=--- "/media/${user_owner}/${volum_name}"
 	echo "volume created successfully"
 	return 0
 }
 
 function list_volumes() {
-	read -p "Enter username: " user_name	
+	read -p "Enter username: " user_name
 	local base_dir="/mnt/users/${user_name}"
 	local count=1
 	clear
 	echo "──────────────────────────────────────"
-	
+
 	if [[ ! -d "$base_dir" ]]; then
 		echo "  [!] User '$user_name' does not exist."
 	else
@@ -61,7 +60,7 @@ function list_volumes() {
 			((count++))
 			has_volumes=true
 		done
-	
+
 		if ! $has_volumes; then
 			echo "  [!] No volumes found for user '$user_name'."
 		fi
@@ -110,7 +109,7 @@ function __VOLUM_TOOLS__() {
 		echo "└────────────────────────────────────┘"
 		read -p "Select an option: " option
 
-		case "${option^^}" in 
+		case "${option^^}" in
 			N) create_volume;;
 			D) delete_volume;;
 			L) list_volumes;;
