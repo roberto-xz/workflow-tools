@@ -75,9 +75,12 @@ function delete_user() {
 			remove_smb "$user_name"
 			#remove_flb "$user_name"
 
-			userdel "${user_name}"
+			userdel "${user_name}" > /dev/null 2>&1
 			rm -rf "/mnt/users/${user_name}"
 			rm -rf "/media/${user_name}"
+			echo "──────────────────────────────────────"
+			echo "user deleted successfully"
+			echo "──────────────────────────────────────"
 			return 0
 		else
 			echo "the user has volumes, please delete the volumes first"
@@ -107,8 +110,8 @@ function create_user() {
 
 	#make/configure media users folder
 	mkdir -p "/media/${user_name}"
-	useradd -d "/media/${user_name}" -M -s /sbin/nologin "$user_name" -g "nas_users"
-	echo -e "$user_pass\n$user_pass" | passwd "$user_name"
+	useradd -d "/media/${user_name}" -M -s /sbin/nologin "$user_name" -g "nas_users" > /dev/null 2>&1
+	echo -e "$user_pass\n$user_pass" | passwd "$user_name" > /dev/null 2>&1
 	chown "${user_name}:nas_users" "/media/${user_name}"
 	chmod u=rx-,g=---,0=--- "/media/${user_name}"
 
@@ -116,6 +119,7 @@ function create_user() {
 	config_smb "$user_name" "$user_pass"
 	#config_flb "$user_name" "$user_pass"
 
+	echo "──────────────────────────────────────"
 	echo "user created successfully"
 	echo "──────────────────────────────────────"
 	read -p "Press [Enter] to return..." _

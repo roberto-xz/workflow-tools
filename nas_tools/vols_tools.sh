@@ -40,6 +40,9 @@ function create_volume() {
 	chown "${user_owner}":"nas_users" "/media/${user_owner}/${volum_name}"
 	chmod u=rwx,g=---,o=--- "/media/${user_owner}/${volum_name}"
 	echo "volume created successfully"
+
+	echo "──────────────────────────────────────"
+	read -p "Press [Enter] to return..." _
 	return 0
 }
 
@@ -93,6 +96,8 @@ function delete_volume() {
 	echo "removing mount path"; rm -rf "${mount_path}"
 	echo "removing volum path"; rm -rf "${dist_disk}"
 	echo "the volume was deleted successfully"
+	echo "──────────────────────────────────────"
+	read -p "Press [Enter] to return..." _
 	return 0
 }
 
