@@ -9,40 +9,39 @@ Discos são virtualizados como arquivos, organizados em RAID com `mdadm`, e disp
 
 ---
 
-## ⚙️ Funcionalidades
+## Funcionalidades
 
-- Criação de discos virtuais usando arquivos  
-- Montagem como loop devices  
+- Criação e remoção de discos virtuais usando loop devices 
+- Montagem automática de discos virtuais  
 - Organização em arrays RAID (RAID 0, 1, 5, 10 etc.) com `mdadm`  
-- Criação de volumes e usuários  
+- Criação e remoção de volumes e usuários  
 - Compartilhamento dos volumes via:  
   - **FTP** (pure-ftpd)  
   - **SMB** (Samba)  
   - **SSH** (acesso à interface de controle via terminal)  
-
 ---
 
-## 🛠️ Tecnologias utilizadas
+## Tecnologias utilizadas
 
-- Bash Script  
-- Docker  
-- Loop Devices  
-- mdadm  
-- pure-ftpd  
-- Samba  
-- OpenSSH  
-
+- Bash Script  para desenvolvimento do menu interativo
+- Docker       para virtualização do ambiente NAS
+- Loop Devices para simular discos virtuais
+- mdadm        para gerenciamento de arrays RAID
+- pure-ftpd    para serviço FTP
+- Samba        para serviço SMB
+- OpenSSH      ara SSH access
+- tcc (Tiny C Compiler) para compilação de scripts em C
 ---
 
-## 🚀 Como rodar
+## Como rodar
 
-### 1️⃣ Construir a imagem Docker
+### 1° Construir a imagem Docker
 
 ```bash
 sudo docker build -t nas-image .
 ```
 
-### 2️⃣ Executar o container
+### 2️° Executar o container
 
 ```bash
 sudo docker run -it --rm --privileged \
@@ -54,41 +53,31 @@ sudo docker run -it --rm --privileged \
 
 ---
 
-## 🧑‍💻 Como usar
+## 3° Como usar
 
-1. Conecte-se ao container via **SSH**:
+1. Conecte-se ao container via **SSH** senha: **toor**: 
 
-```bash
+```bash 
 ssh ssh_user@localhost -p 22
 ```
 
-2. Navegue até o diretório do projeto:
+2. execute o script para acessar o menu interativo:
 
 ```bash
-cd /home/admin/projeto
+run_app
 ```
 
-3. Inicie o menu interativo:
 
-```bash
-sudo ./app.sh
-```
+## Organização dos volumes
 
-> No menu, você poderá criar usuários, volumes, escolher o tipo de RAID e número de discos, além de visualizar o status dos serviços e arrays.
-
----
-
-## 📁 Organização dos volumes
-
-Os volumes criados são montados automaticamente e acessíveis via:
+Os volumes criados são montados em **/media/{userName}/{volumeName}** automaticamente e acessíveis via:
 
 - **FTP** – porta 21  
 - **SMB** – portas 139 e 445  
-- **SSH** – porta 22  
-
 ---
 
-## 📄 Licença
+
+## Licença
 
 Projeto desenvolvido para fins acadêmicos.  
 **Sem licença de distribuição.**
