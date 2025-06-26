@@ -51,6 +51,11 @@ echo "[+] Done."
 echo "[*] Creating SSH runtime path..."
 mkdir -p /run/sshd
 
+echo "[*] Creating users private path..."
+mkdir -p /mnt/users
+chown root:root /mnt/users
+chmod u=rwx,g=---,o=--- /mnt/users
+
 echo "[*] Creating no login shell..."
 echo "/sbin/nologin" >> /etc/shells
 
