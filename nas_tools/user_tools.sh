@@ -114,7 +114,7 @@ function create_user() {
 	useradd -d "/media/${user_name}" -M -s /sbin/nologin "$user_name" -g "nas_users" > /dev/null 2>&1
 	echo -e "$user_pass\n$user_pass" | passwd "$user_name" > /dev/null 2>&1
 	chown "${user_name}:nas_users" "/media/${user_name}"
-	chmod u=rx-,g=---,0=--- "/media/${user_name}"
+	chmod u=rx-,g=---,o=--- "/media/${user_name}"
 
 
 	config_smb "$user_name" "$user_pass"
