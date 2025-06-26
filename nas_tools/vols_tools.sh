@@ -39,7 +39,8 @@ function create_volume() {
 
 	mdadm --quiet --create "$madm_name" --level="$raid_type" --raid-devices="$disks_leng" "${loop_devs[@]}"
 	sleep 3; mkfs.ext4 "$madm_name"
-	mount --mkdir "$madm_name" "/media/${user_owner}/${volum_name}"
+	mkdir -p "/media/${user_owner}/${volum_name}"
+	mount "$madm_name" "/media/${user_owner}/${volum_name}"
 
 	chown "${user_owner}":"nas_users" "/media/${user_owner}/${volum_name}"
 	chmod u=rwx,g=---,o=--- "/media/${user_owner}/${volum_name}"
