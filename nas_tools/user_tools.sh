@@ -1,6 +1,5 @@
-
 #
-# roberto-xz 26,Jul 2025	
+# roberto-xz 26,Jul 2025
 #
 
 function config_flb() {
@@ -10,7 +9,7 @@ function config_flb() {
 	local flbw_conf="/etc/filebrowser/config.db"
 
 	filebrowser -d "$flbw_conf" users add "$user_name" "$user_pass" --perm.admin --scope "$user_home"
-	return 0	
+	return 0
 }
 
 function config_smb() {
@@ -71,7 +70,7 @@ function remove_flb() {
 
 function delete_user() {
 	read -p "type user name:" user_name
-	if [ -d "/mnt/users/${user_name}" ]; then 
+	if [ -d "/mnt/users/${user_name}" ]; then
 		if [ -z "$(ls -A "/media/${user_name}" 2>/dev/null)" ]; then
 			remove_smb "$user_name"
 			#remove_flb "$user_name"
@@ -85,15 +84,15 @@ function delete_user() {
 			return 1
 		fi
 	fi
-	
+
 	echo "User not found"
-	return 1	
+	return 1
 }
 
 
 function create_user() {
 	read -p "type user name: " user_name
-	read -p "type user pass: " user_pass	 
+	read -p "type user pass: " user_pass
 
 	#verify if user exist
 	if [[ -d "/mnt/users/${user_name}" ]]; then
@@ -102,23 +101,25 @@ function create_user() {
 	fi
 
 	#make/configure mnt users folder
-	mkdir -p "/mnt/users/${user_name}"; 
-	chown "admin:nas_users" "/mnt/users/${user_name}"; 
-	chmod 700 "/mnt/users/${user_name}"
+	mkdir -p "/mnt/users/${user_name}";
+	chown "root:root" "/mnt/users/${user_name}";
+	chmod u=rwx,g=---,o=--- "/mnt/users/${user_name}"
 
 	#make/configure media users folder
 	mkdir -p "/media/${user_name}"
 	useradd -d "/media/${user_name}" -M -s /sbin/nologin "$user_name" -g "nas_users"
 	echo -e "$user_pass\n$user_pass" | passwd "$user_name"
 	chown "${user_name}:nas_users" "/media/${user_name}"
-	chmod 550 "/media/${user_name}"
-	
-	
+	chmod u=rx-,g=---,0=--- "/media/${user_name}"
+
+
 	config_smb "$user_name" "$user_pass"
 	#config_flb "$user_name" "$user_pass"
-	
+
 	echo "user created successfully"
+	echo "──────────────────────────────────────"
 	read -p "Press [Enter] to return..." _
+	#echo "there was an error creating the user"
 	return 1
 }
 
@@ -134,8 +135,8 @@ function __USER_TOOLS__() {
 		echo "│  [E] Back to Main Menu             │"
 		echo "└────────────────────────────────────┘"
 		read -p "Select an option: " option
-		
-		case "${option^^}" in 
+
+		case "${option^^}" in
 			N) create_user;;
 			D) delete_user;;
 			L) list_users;;
