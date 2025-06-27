@@ -1,7 +1,6 @@
 FROM ubuntu:22.04
-ENV DEBIAN_FRONTEND=noninteractive
-COPY . /tmp/projeto
-WORKDIR /tmp/projeto
-RUN chmod +x configure.sh init_services.sh
+COPY . /opt/projeto
+WORKDIR /opt/projeto
 
-CMD bash -c "./configure.sh && ./init_services.sh && mv /tmp/projeto /home/admin && chown -R admin:admin /home/admin && su - admin"
+RUN chmod +x configure.sh
+CMD bash -c "./configure.sh"
